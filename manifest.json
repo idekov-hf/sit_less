@@ -1,0 +1,19 @@
+{
+
+  "manifest_version": 2,
+  "name": "Sit Less",
+  "version": "0.1",
+
+  "description": "",
+
+  "icons": {
+    "48": "icons/icon-48.png"
+  },
+
+  "browser_action": {
+    "default_icon": "icons/icon-32.png",
+    "default_title": "Sit Less",
+    "default_popup": "popup/popup.html"
+  }
+
+}
