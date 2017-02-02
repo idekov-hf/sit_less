@@ -9,8 +9,6 @@
 // 	buttonText === 'Start' ? button.classList.add('yellow') : button.classList.remove('yellow')
 // 	button.textContent = buttonText === 'Start' ? 'Pause' : 'Start';
 // }
-//
-// button.addEventListener('click', handleButtonClick);
 
 const button = {
 	element: document.querySelector('.button'),
