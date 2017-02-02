@@ -1,5 +1,5 @@
 html, body {
-  width: 100px;
+  width: 200px;
 }
 
 .button {
@@ -8,12 +8,15 @@ html, body {
   text-align: center;
   font-size: 1.5em;
   cursor: pointer;
+	border-radius: 5px;
 }
 
-.start:hover {
+.button:hover {
   background-color: green;
+	color: white;
 }
 
-.pause:hover {
-  background-color: yellow;
+.yellow:hover {
+	background-color: yellow;
+	color: black;
 }
