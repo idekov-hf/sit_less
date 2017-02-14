@@ -1,13 +1,20 @@
+class Duration {
+  constructor(minutes) {
+    this.minutes = minutes;
+    this.seconds = 0;
+  }
+};
+
 const timer = {
-  sittingTime: document.getElementById('sitting-duration').value,
-  standingTime: document.getElementById('standing-duration').value,
+  sittingDuration: new Duration(view.sittingInput.value),
+  standingDuration: new Duration(view.standingInput.value),
 
   tick: function () {
-    this.sittingTime--;
+    this.sittingDuration--;
   },
 
   getTimes: function () {
-    return [this.sittingTime, this.standingTime];
+    return [this.sittingDuration, this.standingDuration];
   },
 };
 
@@ -32,10 +39,10 @@ const handlers = {
 
 const view = {
   startButton: document.querySelector('.button'),
+  sittingInput: document.getElementById('sitting-duration'),
+  standingInput: document.getElementById('standing-duration'),
   displayTimer: function () {
-    const sittingInput = document.getElementById('sitting-duration');
-    const standingInput = document.getElementById('standing-duration');
-    [sittingInput.value, standingInput.value] = timer.getTimes();
+    [this.sittingInput.value, this.standingInput.value] = timer.getTimes();
   },
 
   toggleButton: function () {
