@@ -1,6 +1,7 @@
 const timer = {
   sittingTime: document.getElementById('sitting-duration').value,
   standingTime: document.getElementById('standing-duration').value,
+
   tick: function () {
     this.sittingTime--;
   },
@@ -11,32 +12,40 @@ const timer = {
 };
 
 const handlers = {
+  handleButtonClick: function () {
+    this.textContent === 'Start' ? handlers.startTimer() : handlers.stopTimer();
+    view.toggleButton();
+  },
+
   startTimer: function () {
-    setInterval(function () {
-      console.log('hello');
+    this.intervalID = setInterval(function () {
       timer.tick();
       view.displayTimer();
     }, 1000);
   },
 
-  start: function () {
-    console.log('hello');
-  },
+  stopTimer: function () {
+      clearInterval(this.intervalID);
+    },
+
 };
 
 const view = {
+  startButton: document.querySelector('.button'),
   displayTimer: function () {
     const sittingInput = document.getElementById('sitting-duration');
     const standingInput = document.getElementById('standing-duration');
     [sittingInput.value, standingInput.value] = timer.getTimes();
   },
 
+  toggleButton: function () {
+    const buttonText = this.startButton.textContent;
+    this.startButton.classList.toggle('paused');
+    this.startButton.textContent = buttonText === 'Start' ? 'Pause' : 'Start';
+  },
+
   setUpEventListeners: function () {
-    const startButton = document.querySelector('.button');
-    startButton.addEventListener('click', function () {
-      console.log('button clicked');
-      handlers.startTimer();
-    });
+    this.startButton.addEventListener('click', handlers.handleButtonClick);
   },
 };
 

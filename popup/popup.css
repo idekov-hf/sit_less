@@ -16,7 +16,7 @@ html, body {
 	color: white;
 }
 
-.yellow:hover {
+.paused:hover {
 	background-color: yellow;
 	color: black;
 }
