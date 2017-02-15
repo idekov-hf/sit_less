@@ -1,23 +1,61 @@
 const sittingInput = document.getElementById('sitting-duration');
 const standingInput = document.getElementById('standing-duration');
 
-function duration(minutes) {
-  return {
-    minutes: minutes,
-    seconds: 0,
-  };
+class Duration {
+
+  constructor(minutes) {
+    this.minutes = minutes;
+    this.seconds = 0;
+  }
+
+  tick() {
+    if (this.seconds === 0) {
+      this.minutes--;
+      this.seconds = 60;
+    }
+
+    this.seconds--;
+
+  }
+
+  asString() {
+    const minutesString = this.unitToString(parseInt(this.minutes));
+    const secondsString = this.unitToString(parseInt(this.seconds));
+    return `${minutesString}:${secondsString}`;
+  }
+
+  unitToString(unit) {
+    return unit < 10 ? `0${unit}` : unit;
+  }
+
+  isDone() {
+    return this.minutes === 0 && this.seconds === 0;
+  }
+
 };
 
-const timer = {
-  sittingDuration: duration(sittingInput.value),
-  standingDuration: duration(standingInput.value),
+const timers = {
+  durations: [
+    new Duration(sittingInput.value),
+    new Duration(standingInput.value),
+  ],
+
+  durationIndex: 0,
 
   tick: function () {
-    this.sittingDuration.minutes--;
+    if (this.durations[this.durationIndex].isDone()) {
+      this.durationIndex++;
+    }
+
+    if (this.durationIndex > this.durations.length) {
+      return;
+    }
+
+    this.durations[this.durationIndex].tick();
   },
 
   getTimes: function () {
-    return [this.sittingDuration.minutes, this.standingDuration.minutes];
+    return this.durations.map(duration => duration.asString());
   },
 };
 
@@ -29,9 +67,9 @@ const handlers = {
 
   startTimer: function () {
     this.intervalID = setInterval(function () {
-      timer.tick();
+      timers.tick();
       view.displayTimer();
-    }, 1000);
+    }, 250);
   },
 
   stopTimer: function () {
@@ -43,7 +81,8 @@ const handlers = {
 const view = {
   startButton: document.querySelector('.button'),
   displayTimer: function () {
-    [sittingInput.value, standingInput.value] = timer.getTimes();
+    // TODO: Number of inputs cannot be hard coded
+    [sittingInput.value, standingInput.value] = timers.getTimes();
   },
 
   toggleButton: function () {
