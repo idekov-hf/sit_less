@@ -21,6 +21,6 @@ html, body {
 	color: black;
 }
 
-input[type=number] {
+input {
   width: 40px;
 }
