@@ -8,6 +8,10 @@ class Duration {
     this.seconds = 0;
   }
 
+  setMinutes(minutes) {
+    this.minutes = minutes;
+  }
+
   tick() {
     if (this.seconds === 0) {
       this.minutes--;
@@ -35,27 +39,41 @@ class Duration {
 };
 
 const timers = {
-  durations: [
-    new Duration(sittingInput.value),
-    new Duration(standingInput.value),
-  ],
+  originalDurationValues: [],
+  activeDurationObjects: [],
+  currentTimerIndex: 0,
 
-  durationIndex: 0,
+  setup: function () {
+    const durationInputs = document.querySelectorAll('input.duration');
+    durationInputs.forEach(input => {
+      this.originalDurationValues.push(parseInt(input.value));
+      const duration = new Duration(input.value);
+      this.activeDurationObjects.push(duration);
+    });
+    console.log(this.originalDurationValues);
+  },
+
+  reset: function () {
+    this.originalDurationValues.forEach((value, index) => {
+      this.activeDurationObjects[index].setMinutes(value);
+    });
+  },
 
   tick: function () {
-    if (this.durations[this.durationIndex].isDone()) {
-      this.durationIndex++;
+    if (this.activeDurationObjects[this.currentTimerIndex].isDone()) {
+      this.currentTimerIndex++;
     }
 
-    if (this.durationIndex > this.durations.length) {
-      return;
+    if (this.currentTimerIndex === this.activeDurationObjects.length) {
+      this.currentTimerIndex = 0;
+      this.reset();
     }
 
-    this.durations[this.durationIndex].tick();
+    this.activeDurationObjects[this.currentTimerIndex].tick();
   },
 
   getTimes: function () {
-    return this.durations.map(duration => duration.asString());
+    return this.activeDurationObjects.map(duration => duration.asString());
   },
 };
 
@@ -69,7 +87,7 @@ const handlers = {
     this.intervalID = setInterval(function () {
       timers.tick();
       view.displayTimer();
-    }, 250);
+    }, 50);
   },
 
   stopTimer: function () {
@@ -97,3 +115,4 @@ const view = {
 };
 
 view.setUpEventListeners();
+timers.setup();
