@@ -1,5 +1,6 @@
 const sittingInput = document.getElementById('sitting-duration');
 const standingInput = document.getElementById('standing-duration');
+const durationInputs = document.querySelectorAll('input.duration');
 
 class Duration {
 
@@ -39,12 +40,12 @@ class Duration {
 };
 
 const timers = {
+  self: this,
   originalDurationValues: [],
   activeDurationObjects: [],
   currentTimerIndex: 0,
 
   setup: function () {
-    const durationInputs = document.querySelectorAll('input.duration');
     durationInputs.forEach(input => {
       this.originalDurationValues.push(parseInt(input.value));
       const duration = new Duration(input.value);
@@ -72,8 +73,8 @@ const timers = {
     this.activeDurationObjects[this.currentTimerIndex].tick();
   },
 
-  getTimes: function () {
-    return this.activeDurationObjects.map(duration => duration.asString());
+  getTimeAsString: function (index) {
+    return this.activeDurationObjects[index].asString();
   },
 };
 
@@ -86,7 +87,7 @@ const handlers = {
   startTimer: function () {
     this.intervalID = setInterval(function () {
       timers.tick();
-      view.displayTimer();
+      view.displayTimers();
     }, 50);
   },
 
@@ -98,9 +99,10 @@ const handlers = {
 
 const view = {
   startButton: document.querySelector('.button'),
-  displayTimer: function () {
-    // TODO: Number of inputs cannot be hard coded
-    [sittingInput.value, standingInput.value] = timers.getTimes();
+  displayTimers: function () {
+    durationInputs.forEach((input, index) => {
+      input.value = timers.getTimeAsString(index);
+    });
   },
 
   toggleButton: function () {
