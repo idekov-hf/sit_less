@@ -51,7 +51,6 @@ const timers = {
       const duration = new Duration(input.value);
       this.activeDurationObjects.push(duration);
     });
-    console.log(this.originalDurationValues);
   },
 
   reset: function () {
